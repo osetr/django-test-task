@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from .models import Blog
+from posts.models import Post
 
 
 class ShowAllBlogs(View):
@@ -30,6 +31,8 @@ class ShowBlog(View):
 
     def get(self, request, pk):
         user_authenticated = request.user.is_authenticated
+        blog = Blog.objects.get(author_id=pk)
+        posts = Post.objects.filter(blog=blog).all()
         if int(pk) == request.user.id:
             active_page = "my_blog"
         else:
@@ -37,10 +40,12 @@ class ShowBlog(View):
 
         return render(
             request,
-            "home.html",
+            "show_blog.html",
             context={
                 "user_authenticated": user_authenticated,  # availability of site functionality
                 "active_page": active_page,  # separeate active and non active pages on navbar
+                "posts": posts,
+                "blog": blog,
             },
         )
 

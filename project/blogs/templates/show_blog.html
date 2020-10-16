@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        {% if active_page == 'my_blog' %}
+        <a href="{% url 'add_post_v' %}"><button class="btn btn-outline-primary float-right">+ New Post</button></a>
+        {% endif %}
+        <span class="float-right" style="margin-top:8px; margin-right:20px;">Likes: {{ blog.likes }}</span>
+
+        <h2>Blog</h2>
+    </div>
+    {% for post in posts %}
+    <div class="card" style="margin-bottom: 20px;">
+
+        <div class="card-header" style="background-color: rgb(203, 245, 248);">
+            {{ post.title }}
+        </div>
+        
+        <div class="card-body" style="color: rgb(80, 76, 76);">
+            <p style="padding-left: 5px;">{{ post.description }}</p>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
