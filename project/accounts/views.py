@@ -3,6 +3,7 @@ from .forms import (
     SignInForm,
     SignUpForm,
 )
+from blogs.models import Blog
 from django.shortcuts import redirect
 from allauth.account.views import (
     SignupView,
@@ -22,9 +23,7 @@ class SignUpView(SignupView):
 
     def get_context_data(self, **kwargs):
         ret = super().get_context_data(**kwargs)
-        user_authenticated = self.request.user.is_authenticated
         new_context = {
-            "user_authenticated": user_authenticated,
             "active_page": "sign_up"
         }
         ret.update(new_context)
@@ -40,18 +39,10 @@ class SignInView(LoginView):
             username = self.request.POST["login"]
             password = self.request.POST["password"]
             user = authenticate(username=username, password=password)
-            if user is not None:
-                if not user.is_active:
-                    errors.append("Your account has been deactivated")
-                else:
-                    login(kwargs['request'], user)
-                    return redirect("home_v")
-            else:
+            if user is None:
                 errors.append("Incorrect username or password")
         ret = super().get_context_data(**kwargs)
-        user_authenticated = self.request.user.is_authenticated
         new_context = {
-            "user_authenticated": user_authenticated,
             "active_page": "sign_in",
             "errors": errors,
         }
