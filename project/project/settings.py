@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "accounts",
     "allauth",
     "home",
+    "blogs",
     "allauth.account",
     "allauth.socialaccount",
 ]
