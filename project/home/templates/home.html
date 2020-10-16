@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Welcome to mBlog</h2>
+
+    {% if not user_authenticated %}
+      <span>Sign in to use all opportunities =)</span>
+    {% endif %}
+
+{% endblock %}
