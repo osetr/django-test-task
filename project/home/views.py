@@ -19,15 +19,16 @@ class HomeView(View):
         if user_authenticated:
             author = request.user
             posts = Post.objects.filter(blog__like__user=author)
+            reads = Read.objects.filter(user=request.user)
+            reads = [read.post_id for read in reads]
             try:
                 Blog.objects.get(author=author)
             except Blog.DoesNotExist:
                 Blog.objects.create(author=author)
         else:
             posts = ""
+            reads = ""
         
-        reads = Read.objects.filter(user=request.user)
-        reads = [read.post_id for read in reads]
 
         return render(
             request,

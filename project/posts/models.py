@@ -12,7 +12,7 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=4024, blank=True)
     date = models.DateTimeField(default=datetime.now(), editable=False)
-
+    users_informed = models.BooleanField(default=False, editable=False)
 
     def __str__(self):
         return "post from %s by %s" % (self.title, self.blog.author)

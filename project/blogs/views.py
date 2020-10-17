@@ -64,7 +64,7 @@ def like_blog(request, pk):
     if request.is_ajax():
         blog = Blog.objects.get(pk=pk)
         try:
-            Like.objects.get(blog_id=pk).delete()
+            Like.objects.get(blog_id=pk, user=request.user).delete()
             blog.likes -= 1
             blog.save()
             status = "Like removed"

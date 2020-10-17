@@ -8,6 +8,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+DOMAIN = "http://127.0.0.1:8000"
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -121,3 +123,9 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 SITE_ID = 1
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+
+CELERY_ACCEPT_CONTENT = ["json"]
+
+CELERY_TASK_SERIALIZER = "json"
