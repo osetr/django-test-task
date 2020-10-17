@@ -28,11 +28,11 @@ class HomeView(View):
             )
             reads = Read.objects.filter(user=request.user)
             reads = [read.post_id for read in reads]
-            my_blog_id = Blog.objects.get(author=request.user).id
             try:
-                Blog.objects.get(author=author)
+                Blog.objects.get(author=author).id
             except Blog.DoesNotExist:
                 Blog.objects.create(author=author)
+            my_blog_id = Blog.objects.get(author=author).id
         else:
             posts = ""
             reads = ""
