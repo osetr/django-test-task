@@ -18,9 +18,11 @@ class HomeView(View):
         # therefore, for sure, blog will be created
         if user_authenticated:
             author = request.user
+
             posts = Post.objects.filter(blog__like__user=author)
             reads = Read.objects.filter(user=request.user)
             reads = [read.post_id for read in reads]
+            my_blog_id = Blog.objects.get(author=request.user).id
             try:
                 Blog.objects.get(author=author)
             except Blog.DoesNotExist:
@@ -28,6 +30,7 @@ class HomeView(View):
         else:
             posts = ""
             reads = ""
+            my_blog_id = ""
         
 
         return render(
@@ -39,5 +42,6 @@ class HomeView(View):
                 "posts": posts, # all posts from blog, user subscribe to
                 "posts_owner": False, # as user cann't subscribe to his own blog
                 "reads": reads, # to highlight posts, which user has read
+                "my_blog_id": my_blog_id,
             },
         )

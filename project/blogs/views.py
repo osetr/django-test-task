@@ -16,6 +16,8 @@ class ShowAllBlogs(View):
         likes = Like.objects.filter(user=request.user)
         likes = [like.blog_id for like in likes]
 
+        my_blog_id = Blog.objects.get(author=request.user).id
+
         return render(
             request,
             "all_blogs.html",
@@ -24,6 +26,7 @@ class ShowAllBlogs(View):
                 "active_page": "all_blogs",  # separeate active and non active pages on navbar
                 "blogs": blogs, # all blogs list 
                 "likes": likes, # to highlight blogs, which user has liked 
+                "my_blog_id": my_blog_id,
             },
         )
 
@@ -35,9 +38,9 @@ class ShowBlog(View):
 
     def get(self, request, pk):
         user_authenticated = request.user.is_authenticated
-        posts = Post.objects.filter(blog__author_id=pk).all()
-        likes_amount = Like.objects.filter(blog__author_id=pk).count()
-        if int(pk) == request.user.id:
+        posts = Post.objects.filter(blog_id=pk).all()
+        likes_amount = Like.objects.filter(blog_id=pk).count()
+        if int(pk) == Blog.objects.get(author=request.user).id:
             active_page = "my_blog"
             posts_owner = True
         else:
@@ -45,6 +48,8 @@ class ShowBlog(View):
             posts_owner = False
         reads = Read.objects.filter(user=request.user)
         reads = [read.post_id for read in reads]
+
+        my_blog_id = Blog.objects.get(author=request.user).id
 
         return render(
             request,
@@ -56,6 +61,7 @@ class ShowBlog(View):
                 "likes_amount": likes_amount, # show amount of likes into blog
                 "posts_owner": posts_owner, # check is user is owner of blogs posts
                 "reads": reads, # to highlight posts, which user has read
+                "my_blog_id": my_blog_id,
             },
         )
 

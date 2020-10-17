@@ -15,7 +15,6 @@ def send_info_about_new_post():
         users = User.objects.filter(like__blog__post=post)
         users = [user.email for user in users]
         subject = 'New post'
-        print(users)
         message = (
             "You've got new post from blog, which you're subscribe to. \n" +
             "You can check it by link " + 

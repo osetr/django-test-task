@@ -17,6 +17,7 @@ class AddNewPostView(LoginRequiredMixin, View):
     def get(self, request):
         user_authenticated = request.user.is_authenticated
         form = AddPostForm(request.POST)
+        my_blog_id = Blog.objects.get(author=request.user).id
 
         return render(
             request,
@@ -24,6 +25,7 @@ class AddNewPostView(LoginRequiredMixin, View):
             context={
                 "form": form, # just form on the page
                 "user_authenticated": user_authenticated,  # adjust navbar functions
+                "my_blog_id": my_blog_id,
             },
         )
 
@@ -34,7 +36,7 @@ class AddNewPostView(LoginRequiredMixin, View):
             post = form.save(commit=False)
             post.blog = Blog.objects.get(author_id=request.user.id)
             post.save()
-        return redirect("show_blog_v", pk=request.user.id)
+            return redirect("show_blog_v", pk=post.blog.id)
 
 
 def read_post(request, pk):
