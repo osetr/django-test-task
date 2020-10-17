@@ -12,7 +12,7 @@ DOMAIN = "http://127.0.0.1:8000"
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -65,12 +65,13 @@ TEMPLATES = [
 WSGI_APPLICATION = "project.wsgi.application"
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "project",
-        "USER": "root",
-        "PASSWORD": "uawesome120300",
-        "HOST": "0.0.0.0",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv("POSTGRES_DB"),
+        'USER': os.getenv("POSTGRES_USER"),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+        'HOST': 'localhost',
+        'PORT': ''
     }
 }
 
