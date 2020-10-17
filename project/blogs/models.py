@@ -13,3 +13,15 @@ class Blog(models.Model):
 
     def __str__(self):
         return "blog by %s" % self.author
+
+
+class Like(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, default="", editable=False
+    )
+    blog = models.ForeignKey(
+        Blog, on_delete=models.CASCADE, default="", editable=False
+    )
+
+    def __str__(self):
+        return "user %s like %s" % (self.user, self.blog)

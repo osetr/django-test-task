@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from blogs.models import Blog
+from posts.models import Post, Read
 
 
 class HomeView(View):
@@ -17,10 +18,16 @@ class HomeView(View):
         # therefore, for sure, blog will be created
         if user_authenticated:
             author = request.user
+            posts = Post.objects.filter(blog__like__user=author)
             try:
                 Blog.objects.get(author=author)
             except Blog.DoesNotExist:
                 Blog.objects.create(author=author)
+        else:
+            posts = ""
+        
+        reads = Read.objects.filter(user=request.user)
+        reads = [read.post_id for read in reads]
 
         return render(
             request,
@@ -28,5 +35,8 @@ class HomeView(View):
             context={
                 "user_authenticated": user_authenticated,  # availability of site functionality
                 "active_page": "home",  # separeate active and non active pages on navbar
+                "posts": posts, # all posts from blog, user subscribe to
+                "posts_owner": False, # as user cann't subscribe to his own blog
+                "reads": reads, # to highlight posts, which user has read
             },
         )

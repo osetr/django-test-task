@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from blogs.models import Blog
+from accounts.models import User
 
 
 # keeps all posts
@@ -15,3 +16,15 @@ class Post(models.Model):
 
     def __str__(self):
         return "post from %s by %s" % (self.title, self.blog.author)
+
+
+class Read(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, default="", editable=False
+    )
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, default="", editable=False
+    )
+
+    def __str__(self):
+        return "user  %s" % self.user

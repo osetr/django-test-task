@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from .models import Post
+from .models import Post, Read
 from accounts.models import User
 from blogs.models import Blog
 from .forms import AddPostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404, JsonResponse
 
 
 class AddNewPostView(LoginRequiredMixin, View):
@@ -34,3 +35,20 @@ class AddNewPostView(LoginRequiredMixin, View):
             post.blog = Blog.objects.get(author_id=request.user.id)
             post.save()
         return redirect("show_blog_v", pk=request.user.id)
+
+
+def read_post(request, pk):
+    if request.is_ajax():
+        post = Post.objects.get(pk=pk)
+        try:
+            Read.objects.get(post_id=pk).delete()
+            status = "Read removed"
+        except Read.DoesNotExist:
+            Read.objects.create(user=request.user, post_id=pk)
+            status = "Read added"
+        response = {
+            "status": status,
+            }
+        return JsonResponse(response)
+    else:
+        raise Http404

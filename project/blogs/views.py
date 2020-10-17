@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import View
-from .models import Blog
-from posts.models import Post
+from .models import Blog, Like
+from posts.models import Post, Read
+from django.http import Http404, JsonResponse
 
 
 class ShowAllBlogs(View):
@@ -12,6 +13,8 @@ class ShowAllBlogs(View):
     def get(self, request):
         user_authenticated = request.user.is_authenticated
         blogs = Blog.objects.all()
+        likes = Like.objects.filter(user=request.user)
+        likes = [like.blog_id for like in likes]
 
         return render(
             request,
@@ -20,6 +23,7 @@ class ShowAllBlogs(View):
                 "user_authenticated": user_authenticated,  # availability of site functionality
                 "active_page": "all_blogs",  # separeate active and non active pages on navbar
                 "blogs": blogs, # all blogs list 
+                "likes": likes, # to highlight blogs, which user has liked 
             },
         )
 
@@ -31,12 +35,16 @@ class ShowBlog(View):
 
     def get(self, request, pk):
         user_authenticated = request.user.is_authenticated
-        blog = Blog.objects.get(author_id=pk)
-        posts = Post.objects.filter(blog=blog).all()
+        posts = Post.objects.filter(blog__author_id=pk).all()
+        likes_amount = Like.objects.filter(blog__author_id=pk).count()
         if int(pk) == request.user.id:
             active_page = "my_blog"
+            posts_owner = True
         else:
             active_page = "some_blog"
+            posts_owner = False
+        reads = Read.objects.filter(user=request.user)
+        reads = [read.post_id for read in reads]
 
         return render(
             request,
@@ -44,8 +52,32 @@ class ShowBlog(View):
             context={
                 "user_authenticated": user_authenticated,  # availability of site functionality
                 "active_page": active_page,  # separeate active and non active pages on navbar
-                "posts": posts,
-                "blog": blog,
+                "posts": posts, # just all posts from the blog
+                "likes_amount": likes_amount, # show amount of likes into blog
+                "posts_owner": posts_owner, # check is user is owner of blogs posts
+                "reads": reads, # to highlight posts, which user has read
             },
         )
 
+
+def like_blog(request, pk):
+    if request.is_ajax():
+        blog = Blog.objects.get(pk=pk)
+        try:
+            Like.objects.get(blog_id=pk).delete()
+            blog.likes -= 1
+            blog.save()
+            status = "Like removed"
+        except Like.DoesNotExist:
+            Like.objects.create(user=request.user, blog_id=pk)
+            blog.likes += 1
+            blog.save()
+            status = "Like added"
+        likes_amount = blog.likes
+        response = {
+            "likes_amount": likes_amount,
+            "status": status,
+            }
+        return JsonResponse(response)
+    else:
+        raise Http404
