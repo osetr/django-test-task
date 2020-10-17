@@ -7,7 +7,10 @@ from accounts.models import User
 # keeps all posts
 class Post(models.Model):
     blog = models.ForeignKey(
-        Blog, on_delete=models.CASCADE, default="", editable=False
+        Blog,
+        on_delete=models.CASCADE,
+        default="",
+        editable=False
     )
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=4024, blank=True)
@@ -20,10 +23,16 @@ class Post(models.Model):
 
 class Read(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, default="", editable=False
+        User,
+        on_delete=models.CASCADE,
+        default="",
+        editable=False
     )
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, default="", editable=False
+        Post,
+        on_delete=models.CASCADE,
+        default="",
+        editable=False
     )
 
     def __str__(self):

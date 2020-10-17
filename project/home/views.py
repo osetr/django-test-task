@@ -19,7 +19,13 @@ class HomeView(View):
         if user_authenticated:
             author = request.user
 
-            posts = Post.objects.filter(blog__like__user=author)
+            posts = (
+                Post
+                .objects
+                .filter(blog__like__user=author)
+                .order_by("date")
+                .reverse()
+            )
             reads = Read.objects.filter(user=request.user)
             reads = [read.post_id for read in reads]
             my_blog_id = Blog.objects.get(author=request.user).id
@@ -31,7 +37,6 @@ class HomeView(View):
             posts = ""
             reads = ""
             my_blog_id = ""
-        
 
         return render(
             request,
@@ -39,9 +44,9 @@ class HomeView(View):
             context={
                 "user_authenticated": user_authenticated,  # availability of site functionality
                 "active_page": "home",  # separeate active and non active pages on navbar
-                "posts": posts, # all posts from blog, user subscribe to
-                "posts_owner": False, # as user cann't subscribe to his own blog
-                "reads": reads, # to highlight posts, which user has read
-                "my_blog_id": my_blog_id,
+                "posts": posts,  # all posts from blog, user subscribe to
+                "posts_owner": False,  # as user cann't subscribe to his own blog
+                "reads": reads,  # to highlight posts, which user has read
+                "my_blog_id": my_blog_id,  # keep pk of personal blog for link in navbar
             },
         )

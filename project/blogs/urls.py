@@ -1,5 +1,9 @@
 from django.urls import path
-from .views import *
+from .views import (
+    ShowAllBlogs,
+    ShowBlog,
+    like_blog,
+)
 
 
 urlpatterns = [

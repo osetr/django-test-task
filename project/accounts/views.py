@@ -1,16 +1,14 @@
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import authenticate, logout
 from .forms import (
     SignInForm,
     SignUpForm,
 )
-from blogs.models import Blog
 from django.shortcuts import redirect
 from allauth.account.views import (
     SignupView,
     LoginView,
 )
-from django.http import HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
+
 # all views here are just overrided allauth module views.
 # this approach helps to use benifits of allauth views.
 # overriding is necessary to assign proper forms into views,
@@ -23,9 +21,7 @@ class SignUpView(SignupView):
 
     def get_context_data(self, **kwargs):
         ret = super().get_context_data(**kwargs)
-        new_context = {
-            "active_page": "sign_up"
-        }
+        new_context = {"active_page": "sign_up"}
         ret.update(new_context)
         return ret
 

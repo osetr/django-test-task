@@ -7,18 +7,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blogs', '0006_auto_20201016_1847'),
+        ("blogs", "0006_auto_20201016_1847"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='blog',
-            name='likes',
+            model_name="blog",
+            name="likes",
             field=models.IntegerField(default=0, editable=False),
         ),
         migrations.AlterField(
-            model_name='blog',
-            name='date',
-            field=models.DateTimeField(default=datetime.datetime(2020, 10, 16, 19, 28, 0, 428252), editable=False),
+            model_name="blog",
+            name="date",
+            field=models.DateTimeField(
+                default=datetime.datetime(2020, 10, 16, 19, 28, 0, 428252),
+                editable=False,
+            ),
         ),
     ]

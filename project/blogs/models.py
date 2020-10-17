@@ -17,10 +17,16 @@ class Blog(models.Model):
 
 class Like(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, default="", editable=False
+        User,
+        on_delete=models.CASCADE,
+        default="",
+        editable=False
     )
     blog = models.ForeignKey(
-        Blog, on_delete=models.CASCADE, default="", editable=False
+        Blog,
+        on_delete=models.CASCADE,
+        default="",
+        editable=False
     )
 
     def __str__(self):

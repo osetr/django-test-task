@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from .models import Post, Read
-from accounts.models import User
+from .models import Read
 from blogs.models import Blog
 from .forms import AddPostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,6 +11,7 @@ class AddNewPostView(LoginRequiredMixin, View):
     """
         View for adding new posts
     """
+
     login_url = "/sign_in/"
 
     def get(self, request):
@@ -23,9 +23,9 @@ class AddNewPostView(LoginRequiredMixin, View):
             request,
             "add_post.html",
             context={
-                "form": form, # just form on the page
+                "form": form,  # just form on the page
                 "user_authenticated": user_authenticated,  # adjust navbar functions
-                "my_blog_id": my_blog_id,
+                "my_blog_id": my_blog_id,  # keep pk of personal blog for link in navbar
             },
         )
 
@@ -41,7 +41,6 @@ class AddNewPostView(LoginRequiredMixin, View):
 
 def read_post(request, pk):
     if request.is_ajax():
-        post = Post.objects.get(pk=pk)
         try:
             Read.objects.get(post_id=pk).delete()
             status = "Read removed"
@@ -50,7 +49,7 @@ def read_post(request, pk):
             status = "Read added"
         response = {
             "status": status,
-            }
+        }
         return JsonResponse(response)
     else:
         raise Http404

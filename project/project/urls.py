@@ -1,12 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from accounts.views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
-    path("", include("accounts.urls")),
-    path("blogs/", include("blogs.urls")),
-    path("", include("home.urls")),
-    path("posts/", include("posts.urls")),
+    path(r"admin/", admin.site.urls),
+    path(r"accounts/", include("allauth.urls")),
+    path(r"", include("accounts.urls")),
+    path(r"", include("home.urls")),
+    path(r"blogs/", include("blogs.urls")),
+    path(r"posts/", include("posts.urls")),
 ]

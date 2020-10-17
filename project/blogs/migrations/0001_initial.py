@@ -16,12 +16,34 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Blog',
+            name="Blog",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateTimeField(default=datetime.datetime(2020, 10, 16, 14, 11, 10, 387999), editable=False)),
-                ('likes', models.IntegerField(default=0, editable=False)),
-                ('author', models.ForeignKey(default='', editable=False, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "date",
+                    models.DateTimeField(
+                        default=datetime.datetime(2020, 10, 16, 14, 11, 10, 387999),
+                        editable=False,
+                    ),
+                ),
+                ("likes", models.IntegerField(default=0, editable=False)),
+                (
+                    "author",
+                    models.ForeignKey(
+                        default="",
+                        editable=False,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

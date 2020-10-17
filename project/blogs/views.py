@@ -2,13 +2,16 @@ from django.shortcuts import render
 from django.views.generic import View
 from .models import Blog, Like
 from posts.models import Post, Read
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, JsonResponse
 
 
-class ShowAllBlogs(View):
+class ShowAllBlogs(LoginRequiredMixin, View):
     """
         View to show all blogs.
     """
+
+    login_url = "/sign_in/"
 
     def get(self, request):
         user_authenticated = request.user.is_authenticated
@@ -24,17 +27,19 @@ class ShowAllBlogs(View):
             context={
                 "user_authenticated": user_authenticated,  # availability of site functionality
                 "active_page": "all_blogs",  # separeate active and non active pages on navbar
-                "blogs": blogs, # all blogs list 
-                "likes": likes, # to highlight blogs, which user has liked 
-                "my_blog_id": my_blog_id,
+                "blogs": blogs,  # all blogs list
+                "likes": likes,  # to highlight blogs, which user has liked
+                "my_blog_id": my_blog_id,  # keep pk of personal blog for link in navbar
             },
         )
 
 
-class ShowBlog(View):
+class ShowBlog(LoginRequiredMixin, View):
     """
         View particular blog.
     """
+
+    login_url = "/sign_in/"
 
     def get(self, request, pk):
         user_authenticated = request.user.is_authenticated
@@ -57,11 +62,11 @@ class ShowBlog(View):
             context={
                 "user_authenticated": user_authenticated,  # availability of site functionality
                 "active_page": active_page,  # separeate active and non active pages on navbar
-                "posts": posts, # just all posts from the blog
-                "likes_amount": likes_amount, # show amount of likes into blog
-                "posts_owner": posts_owner, # check is user is owner of blogs posts
-                "reads": reads, # to highlight posts, which user has read
-                "my_blog_id": my_blog_id,
+                "posts": posts,  # just all posts from the blog
+                "likes_amount": likes_amount,  # show amount of likes into blog
+                "posts_owner": posts_owner,  # check is user is owner of blogs posts
+                "reads": reads,  # to highlight posts, which user has read
+                "my_blog_id": my_blog_id,  # keep pk of personal blog for link in navbar
             },
         )
 
@@ -83,7 +88,7 @@ def like_blog(request, pk):
         response = {
             "likes_amount": likes_amount,
             "status": status,
-            }
+        }
         return JsonResponse(response)
     else:
         raise Http404
