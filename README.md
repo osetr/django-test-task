@@ -9,7 +9,7 @@ This is a little site, that include ability to create new posts for your own blo
 Manual
 ======
 
-As this project is dockerized, you can vary quickly untap it on your machine. To do this, just clone this repo on your machine and up docker-compose. Also, don't forget to create a .env file in the root of the cloned directory and insert your key/value pairs in the following format of KEY=VALUE:
+As this project is dockerized, you can very quickly untap it on your machine. To do this, just clone this repo on your machine and up docker-compose. Also, don't forget to create a .env file in the root of the cloned directory and insert your key/value pairs in the following format of KEY=VALUE:
 
 ```sh
 SECRET_KEY = 'key'
@@ -25,4 +25,4 @@ Now, just check project at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 Technology stack
 ================
 
-In general, Django framework was used to create this site. For authorization was used very nice module [django-allauth](https://django-allauth.readthedocs.io/en/latest/installation.html), which include wide opportunities for developers. Bootstrap and vue.js are in charge of design(vue.js objects serve just for ajax requests). Celery needed to send messages, so that the site could do this in the background without overloading the server.
+In general, Django framework was used to create this site. [django-allauth](https://django-allauth.readthedocs.io/en/latest/installation.html) module was used for authorization. It includes wide opportunities for developers. Bootstrap and vue.js are in charge of design(vue.js objects serve just for ajax requests). Celery needed to send messages, so that the site could do this in the background without overloading the server.
